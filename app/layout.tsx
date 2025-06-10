@@ -1,4 +1,5 @@
-import "./globals.css";
+import "./styles/globals.css";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 export default function RootLayout({
   children,
@@ -8,7 +9,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className=""
       >
         {children}
       </body>
