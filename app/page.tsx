@@ -7,6 +7,7 @@ export default function Home() {
         <i className="bi bi-youtube text-blue-950 text-2xl bg-slate-200 p-2 rounded-full px-3"></i>
         <i className="bi bi-linkedin text-blue-950 text-2xl bg-slate-200 p-2 rounded-full px-3"></i>
         <i className="bi bi-facebook text-blue-950 text-2xl bg-slate-200 p-2 rounded-full px-3"></i>
+        <i className="bi bi-instagram text-blue-950 text-2xl bg-slate-200 p-2 rounded-full px-3"></i>
       </div>
     </div>
   );
