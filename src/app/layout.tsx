@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './styles/globals.css'
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -76,10 +77,7 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <head>
         {/* Bootstrap Icons CDN */}
-        <link 
-          rel="stylesheet" 
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css"
-        />
+       
         {/* Favicon and Apple Touch Icons */}
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />

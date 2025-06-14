@@ -197,7 +197,7 @@ export default function Chatbot() {
             <button 
               onClick={handleSendMessage} 
               disabled={!inputValue.trim() || isTyping}
-              className="send-button"
+              className="bg-[#31c92c] p-2 h-[40px] w-[40px] rounded-full text-white cursor-pointer transition-all duration-3s disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <i className="bi bi-send-fill"></i>
             </button>

@@ -1,3 +1,4 @@
+@import 'tailwindcss';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 /* ===== CSS RESET ===== */
@@ -516,7 +517,6 @@ body::before {
   top: 0;
   left: 0;
   right: 0;
-  height: 105px;
   z-index: 1000;
   border-bottom: 1px solid var(--border-light);
 }
@@ -532,7 +532,6 @@ body::before {
 .logo {
   display: flex;
   align-items: center;
-  margin-left: -120px;
   text-decoration: none;
   height: 40px;
   transition: transform 0.3s ease;
@@ -660,7 +659,7 @@ body::before {
   border: none;
   color: var(--text-white);
   font-size: 1.5rem;
-  padding: 0.75rem;
+  padding: 0.75rem 1.5rem;
   border-radius: var(--radius-lg);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -1038,7 +1037,7 @@ body::before {
   display: flex;
   align-items: center;
   gap: 20px;
-  animation: scroll-right-to-left 5s linear infinite;
+  animation: scroll-right-to-left 10s linear infinite;
   width: calc(200% + 20px);
   height: 80px;
   flex-direction: row;
@@ -1076,8 +1075,8 @@ body::before {
 
 .logo-item {
   flex-shrink: 0;
-  width: 110px;
-  height: 50px;
+  width: 120px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1086,10 +1085,8 @@ body::before {
 }
 
 .logo-item img {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: 100px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   transition: all 0.3s ease;
   display: block;
@@ -1586,6 +1583,7 @@ body::before {
 .contact-item {
   display: flex;
   align-items: center;
+  justify-content: left;
   gap: 0.75rem;
   color: var(--text-white);
   font-size: 0.95rem;
@@ -2599,8 +2597,8 @@ body::before {
 /* ===== CHATBOT STYLES ===== */
 .chatbot-container {
   position: fixed;
-  bottom: 180px;
-  right: 20px;
+  bottom: 90px;
+  right: 25px;
   z-index: 10000;
   font-family: 'Inter', sans-serif;
 }
@@ -2660,7 +2658,7 @@ body::before {
 
 .chatbot-window {
   position: absolute;
-  bottom: -170px;
+  bottom: -70px;
   right: 70px;
   width: 350px;
   height: 500px;
@@ -2884,10 +2882,11 @@ body::before {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  justify-content: space-between;
 }
 
 .input-container input {
-  flex: 1;
+  width: 90%;
   background: var(--surface-medium);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-2xl);
@@ -2908,7 +2907,7 @@ body::before {
 }
 
 .send-button {
-  background: rgb(49, 201, 44);
+  background: #31c92c;
   border: none;
   color: var(--text-white);
   width: 40px;
@@ -2948,6 +2947,7 @@ body::before {
   .nav-center {
     display: none;
   }
+
 
   .mobile-menu-btn {
     display: block;
@@ -3173,16 +3173,17 @@ body::before {
     font-size: 2.5rem;
   }
 
+
   /* Chatbot Responsive */
   .chatbot-container {
-    bottom: 15px;
+    bottom: 75px;
     right: 15px;
   }
   
   .chatbot-window {
     width: 320px;
-    height: 450px;
-    bottom: 75px;
+    height: auto;
+    bottom: 90px;
   }
   
   .chatbot-toggle {
@@ -3241,10 +3242,9 @@ body::before {
 
   .footer-content {
     grid-template-columns: 1fr;
-    text-align: center;
+    
   }
-
-  .social-links {
+ .social-links {
     justify-content: center;
   }
 
@@ -3252,9 +3252,6 @@ body::before {
     align-items: center;
   }
 
-  .contact-item {
-    justify-content: center;
-  }
 
   .partners-section {
     height: 80px;
@@ -3330,8 +3327,9 @@ body::before {
   /* Chatbot Mobile */
   .chatbot-window {
     width: 290px;
-    height: 400px;
-    right: -10px;
+    max-height: 60vh;
+    right: 0px;
+    bottom: 60px;
   }
   
   .chatbot-toggle {
