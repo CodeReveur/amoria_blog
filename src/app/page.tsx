@@ -18,61 +18,22 @@ export default function HomePage() {
   const [loadingStatus, setLoadingStatus] = useState('Starting system...');
   const [loadingText, setLoadingText] = useState('INITIALIZING');
   const [preloaderReady, setPreloaderReady] = useState(false);
+  const [hasShownPreloader, setHasShownPreloader] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const [stars, setStars] = useState<React.ReactElement[]>([]);
   const [particles, setParticles] = useState<React.ReactElement[]>([]);
   const trackRef = useRef<HTMLDivElement>(null);
 
-  const plans = [
-    {
-      name: 'Basic',
-      description: 'Start small',
-      monthlyPrice: 15,
-      yearlyPrice: 150,
-      popular: false,
-      features: [
-        'Up to 10 projects',
-        '2GB storage',
-        'Email support',
-        'Basic analytics'
-      ]
-    },
-    {
-      name: 'Pro',
-      description: 'Scale your capabilities',
-      monthlyPrice: 85,
-      yearlyPrice: 850,
-      popular: true,
-      features: [
-        'Unlimited projects',
-        '100GB storage',
-        'Priority support',
-        'Advanced analytics',
-        'Team collaboration'
-      ]
-    },
-    {
-      name: 'Enterprise',
-      description: 'Do more with enterprise',
-      monthlyPrice: 125,
-      yearlyPrice: 1250,
-      popular: false,
-      features: [
-        'Everything in Pro',
-        'Unlimited storage',
-        '24/7 phone support',
-        'Custom integrations',
-        'Dedicated account manager'
-      ]
-    }
+  // Loading stages for the preloader - 20% increments
+  const loadingStages = [
+    { progress: 20, status: "Loading core modules...", text: "LOADING" },
+    { progress: 40, status: "Establishing connections...", text: "CONNECTING" },
+    { progress: 60, status: "Syncing global data...", text: "SYNCING" },
+    { progress: 80, status: "Optimizing performance...", text: "OPTIMIZING" },
+    { progress: 100, status: "Welcome to Amoria Tech Global!", text: "COMPLETE" }
   ];
 
   const originalServices = [
-    {
-      title: 'Software Publishing',
-      description: 'Comprehensive software publishing services including distribution, licensing, and digital marketplace management for your software products.',
-      icon: '💿',
-      features: ['Digital distribution', 'License management', 'Marketplace integration', 'Version control']
-    },
     {
       title: 'Web Portals',
       description: 'Custom web portal development and management solutions that provide secure access to information and services for your users.',
@@ -90,39 +51,25 @@ export default function HomePage() {
       description: 'Expert IT consultancy and comprehensive computer facilities management to optimize your technology infrastructure.',
       icon: '🔧',
       features: ['IT consulting', 'Infrastructure management', 'System optimization', 'Technical support']
-    },
-    {
-      title: 'TV Programming & Broadcasting Activities',
-      description: 'Complete television programming and broadcasting solutions including content creation, scheduling, and distribution management.',
-      icon: '📺',
-      features: ['Content programming', 'Broadcasting management', 'Schedule optimization', 'Distribution networks']
-    },
-    {
-      title: 'Memories Storage',
-      description: 'Secure and reliable data storage solutions for preserving your digital memories and important information with cloud integration.',
-      icon: '💾',
-      features: ['Cloud storage', 'Data backup', 'Memory preservation', 'Secure access']
     }
   ];
 
-  // Loading stages for the preloader - 20% increments
-  const loadingStages = [
-    { progress: 20, status: "Loading core modules...", text: "LOADING" },
-    { progress: 40, status: "Establishing connections...", text: "CONNECTING" },
-    { progress: 60, status: "Syncing global data...", text: "SYNCING" },
-    { progress: 80, status: "Optimizing performance...", text: "OPTIMIZING" },
-    { progress: 100, status: "Welcome to Amoria Tech Global!", text: "COMPLETE" }
-  ];
-
-  // Hydration safe mounting and preloader setup
+  // Initial client-side mount
   useEffect(() => {
-    // First, ensure component is mounted
-    setPreloaderReady(true);
+    setIsClient(true);
+    
+    const hasShown = typeof window !== 'undefined' ? sessionStorage.getItem('preloaderShown') : null;
+    if (hasShown) {
+      setHasShownPreloader(true);
+      setMounted(true);
+    } else {
+      setPreloaderReady(true);
+    }
   }, []);
 
-  // Preloader animation logic - only runs after hydration
+  // Preloader animation logic - only runs if not shown before
   useEffect(() => {
-    if (!preloaderReady) return;
+    if (!preloaderReady || hasShownPreloader || !isClient) return;
 
     let currentStage = 0;
 
@@ -138,6 +85,9 @@ export default function HomePage() {
         if (stage.progress === 100) {
           setTimeout(() => {
             setMounted(true);
+            if (typeof window !== 'undefined') {
+              sessionStorage.setItem('preloaderShown', 'true');
+            }
           }, 1000);
         } else {
           currentStage++;
@@ -148,11 +98,11 @@ export default function HomePage() {
 
     const timer = setTimeout(updateProgress, 1000);
     return () => clearTimeout(timer);
-  }, [preloaderReady]);
+  }, [preloaderReady, hasShownPreloader, isClient]);
 
   // Create stars and particles after hydration to avoid hydration issues
   useEffect(() => {
-    if (!preloaderReady) return;
+    if (!preloaderReady || hasShownPreloader || !isClient) return;
 
     const starsArray = [];
     for (let i = 0; i < 100; i++) {
@@ -188,11 +138,11 @@ export default function HomePage() {
       );
     }
     setParticles(particlesArray);
-  }, [preloaderReady]);
+  }, [preloaderReady, hasShownPreloader, isClient]);
 
   // Show/hide scroll-to-top button (only after mount)
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || !isClient) return;
 
     const handleScroll = () => {
       if (typeof window !== 'undefined') {
@@ -206,7 +156,7 @@ export default function HomePage() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [mounted]);
+  }, [mounted, isClient]);
 
   // Scroll to top function
   const scrollToTop = () => {
@@ -223,18 +173,18 @@ export default function HomePage() {
 
   // Auto-sliding functionality with infinite loop (only after mount)
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || !isClient) return;
 
     const interval = setInterval(() => {
       setCurrentSlide(prev => prev + 1);
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [mounted]);
+  }, [mounted, isClient]);
 
   // Handle infinite loop reset
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || !isClient) return;
 
     if (currentSlide >= originalServices.length) {
       const timer = setTimeout(() => {
@@ -246,11 +196,11 @@ export default function HomePage() {
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [currentSlide, originalServices.length, mounted]);
+  }, [currentSlide, originalServices.length, mounted, isClient]);
 
   // Fixed typing animation using React state instead of DOM manipulation
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || !isClient) return;
 
     const word = 'Technology';
     let charIndex = 0;
@@ -282,8 +232,7 @@ export default function HomePage() {
 
     const timer = setTimeout(typeWriter, 1000);
     return () => clearTimeout(timer);
-  }, [mounted]);
-
+  }, [mounted, isClient]);
   // Navigation functions
   const nextSlide = () => {
     if (currentSlide >= originalServices.length - 1) {
@@ -315,7 +264,6 @@ export default function HomePage() {
     setCurrentSlide(index);
   };
 
-
   // Safe scroll into view function
   const scrollToElement = (elementId: string) => {
     if (typeof document !== 'undefined') {
@@ -326,8 +274,8 @@ export default function HomePage() {
     }
   };
 
-  // Globe Preloader Component - only show when ready and not mounted
-  if (!mounted) {
+  // Globe Preloader Component - only show when ready and not mounted and hasn't been shown before
+  if (!mounted && !hasShownPreloader && isClient) {
     // Show minimal loading state until preloader is ready
     if (!preloaderReady) {
       return (
@@ -397,6 +345,11 @@ export default function HomePage() {
     );
   }
 
+  // Don't render main content until client-side mounted
+  if (!isClient) {
+    return <div></div>;
+  }
+
   return (
     <>
       <Navbar />
@@ -424,7 +377,7 @@ export default function HomePage() {
             <div className="action-buttons-container">
               <button 
                 className="action-btn member-btn"
-                onClick={() => scrollToElement('pricing-section')}
+                onClick={() => scrollToElement('services-section')}
               >
                 Become a Member
               </button>
@@ -432,7 +385,7 @@ export default function HomePage() {
                 className="action-btn started-btn"
                 onClick={() => scrollToElement('services-section')}
               >
-                Get Started
+                Contact Sales
               </button>
             </div>
           </section>
@@ -450,85 +403,19 @@ export default function HomePage() {
               <div className="products-grid">
                 <div className="product-card">
                   <div className="product-icon">
-                    <span>📱</span>
+                    <span>🎪</span>
                   </div>
                   <div className="product-content">
-                    <h3 className="product-title">USSD Mobile Banking</h3>
+                    <h3 className="product-title">Amoria Connect</h3>
                     <p className="product-description">
-                      Provides access to banking services on mobile phone without internet connection.
+                      Connect people globally through virtual events including weddings, concerts, conferences, and celebrations for those unable to attend in person.
                     </p>
-                    <button className="product-price-btn">$199 - Buy Now</button>
-                  </div>
-                </div>
-
-                <div className="product-card">
-                  <div className="product-icon">
-                    <span>🎯</span>
-                  </div>
-                  <div className="product-content">
-                    <h3 className="product-title">Clearing and Payment Solution</h3>
-                    <p className="product-description">
-                      Enable exchange of interbank transactions through clearing central house system.
-                    </p>
-                    <button className="product-price-btn">$399 - Buy Now</button>
-                  </div>
-                </div>
-
-                <div className="product-card">
-                  <div className="product-icon">
-                    <span>📊</span>
-                  </div>
-                  <div className="product-content">
-                    <h3 className="product-title">Android Based Agency Banking</h3>
-                    <p className="product-description">
-                      Extends branch services to customer through bank agents using mobile devices.
-                    </p>
-                    <button className="product-price-btn">$299 - Buy Now</button>
-                  </div>
-                </div>
-
-                <div className="product-card">
-                  <div className="product-icon">
-                    <span>💳</span>
-                  </div>
-                  <div className="product-content">
-                    <h3 className="product-title">Digital Payment Gateway</h3>
-                    <p className="product-description">
-                      Secure online payment processing solution for e-commerce businesses and merchants.
-                    </p>
-                    <button className="product-price-btn">$499 - Buy Now</button>
-                  </div>
-                </div>
-
-                <div className="product-card">
-                  <div className="product-icon">
-                    <span>🔒</span>
-                  </div>
-                  <div className="product-content">
-                    <h3 className="product-title">Security Management System</h3>
-                    <p className="product-description">
-                      Comprehensive security solution with real-time monitoring and threat detection.
-                    </p>
-                    <button className="product-price-btn">$599 - Buy Now</button>
-                  </div>
-                </div>
-
-                <div className="product-card">
-                  <div className="product-icon">
-                    <span>☁️</span>
-                  </div>
-                  <div className="product-content">
-                    <h3 className="product-title">Cloud Infrastructure Suite</h3>
-                    <p className="product-description">
-                      Scalable cloud computing platform with automated deployment and management tools.
-                    </p>
-                    <button className="product-price-btn">$799 - Buy Now</button>
+                    <button className="product-price-btn">Explore</button>
                   </div>
                 </div>
               </div>
             </div>
           </section>
-
           {/* Partners Section */}
           <section className="partners-section">
             <div className="partners-container">
@@ -590,7 +477,6 @@ export default function HomePage() {
               </div>
             </div>
           </section>
-
           {/* Services Section */}
           <section className="services-section" id="services-section">
             <div className="services-header">
@@ -657,12 +543,12 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* Pricing Section */}
+          {/* Pricing Section - Commented Out */}
+          {/*
           <section className="pricing-section" id="pricing-section">
             <div className="pricing-header">
               <h1 className="pricing-title">Choose the right plan for your business</h1>
               
-              {/* Billing Toggle */}
               <div className="billing-toggle">
                 <button 
                   className={`toggle-btn ${billingCycle === 'monthly' ? 'active' : ''}`}
@@ -679,7 +565,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Pricing Cards */}
             <div className="pricing-grid">
               {plans.map((plan) => (
                 <div key={plan.name} className={`pricing-card ${plan.popular ? 'popular' : ''}`}>
@@ -717,11 +602,12 @@ export default function HomePage() {
               ))}
             </div>
           </section>
+          */}
         </div>
       </main>
 
       {/* Scroll to Top Button */}
-      {showScrollTop && (
+      {isClient && mounted && showScrollTop && (
         <button 
           className="scroll-to-top"
           onClick={scrollToTop}

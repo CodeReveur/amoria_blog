@@ -9,75 +9,26 @@ export default function ProductsPage() {
 
   const products = [
     {
-      title: 'USSD Mobile Banking',
-      description: 'Provides access to banking services on mobile phone without internet connection. Complete offline banking solution for rural and urban areas.',
-      icon: '📱',
-      features: ['Offline banking access', 'USSD protocol support', 'Multi-language interface', 'Real-time transactions'],
-      price: '$199',
-      fullDescription: 'Our USSD Mobile Banking solution enables customers to access banking services through simple USSD codes on any mobile phone, without requiring internet connectivity.'
-    },
-    {
-      title: 'Clearing and Payment Solution',
-      description: 'Enable exchange of interbank transactions through clearing central house system with advanced security and real-time processing.',
-      icon: '🎯',
-      features: ['Interbank transactions', 'Central clearing house', 'Real-time processing', 'Advanced security'],
-      price: '$399',
-      fullDescription: 'Comprehensive clearing and settlement system that facilitates secure interbank transactions through a centralized clearing house with real-time processing capabilities.'
-    },
-    {
-      title: 'Android Based Agency Banking',
-      description: 'Extends branch services to customer through bank agents using mobile devices with comprehensive agent management system.',
-      icon: '📊',
-      features: ['Agent management', 'Mobile POS integration', 'Customer onboarding', 'Transaction monitoring'],
-      price: '$299',
-      fullDescription: 'Transform any Android device into a mobile banking terminal, enabling bank agents to provide full banking services to customers in remote locations.'
-    },
-    {
-      title: 'Digital Payment Gateway',
-      description: 'Secure online payment processing solution for e-commerce businesses and merchants with multi-currency support.',
-      icon: '💳',
-      features: ['Multi-currency support', 'Fraud detection', 'API integration', 'Real-time reporting'],
-      price: '$499',
-      fullDescription: 'Advanced payment gateway solution with enterprise-grade security, supporting multiple payment methods and currencies for global e-commerce operations.'
-    },
-    {
-      title: 'Security Management System',
-      description: 'Comprehensive security solution with real-time monitoring and threat detection for enterprise-level protection.',
-      icon: '🔒',
-      features: ['Real-time monitoring', 'Threat detection', 'Access control', 'Audit logging'],
-      price: '$599',
-      fullDescription: 'Enterprise security management platform with AI-powered threat detection, comprehensive access control, and real-time monitoring capabilities.'
-    },
-    {
-      title: 'Cloud Infrastructure Suite',
-      description: 'Scalable cloud computing platform with automated deployment and management tools for modern applications.',
-      icon: '☁️',
-      features: ['Auto-scaling', 'Container orchestration', 'DevOps integration', 'Monitoring dashboard'],
-      price: '$799',
-      fullDescription: 'Complete cloud infrastructure solution with Kubernetes orchestration, automated CI/CD pipelines, and comprehensive monitoring tools.'
-    },
-    {
-      title: 'Blockchain Transaction System',
-      description: 'Decentralized transaction processing system with smart contract support and immutable transaction records.',
-      icon: '⛓️',
-      features: ['Smart contracts', 'Immutable records', 'Decentralized network', 'Crypto integration'],
-      price: '$899',
-      fullDescription: 'Advanced blockchain platform for secure, transparent transactions with smart contract functionality and cryptocurrency integration.'
-    },
-    {
-      title: 'AI-Powered CRM Platform',
-      description: 'Intelligent customer relationship management system with predictive analytics and automated workflows.',
-      icon: '🤖',
-      features: ['Predictive analytics', 'Automated workflows', 'Customer insights', 'Integration APIs'],
-      price: '$699',
-      fullDescription: 'Next-generation CRM platform powered by artificial intelligence, providing predictive customer insights and automated relationship management.'
+      title: 'Amoria Connect',
+      description: 'Connect people globally through virtual events including weddings, concerts, conferences, and celebrations for those unable to attend in person.',
+      icon: '🎪',
+      features: ['Virtual event hosting', 'Global connectivity', 'HD streaming quality', 'Interactive participation'],
+      fullDescription: 'Our comprehensive virtual event platform enables you to host all kinds of events online including weddings, concerts, conferences, and special celebrations, connecting people who are unable to attend them physically.'
     }
   ];
 
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  // Show/hide scroll-to-top button
+  // Handle mounting to prevent hydration mismatch
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Show/hide scroll-to-top button - only after component is mounted
+  useEffect(() => {
+    if (!mounted) return;
+
     const handleScroll = () => {
       if (window.scrollY > 300) {
         setShowScrollTop(true);
@@ -86,9 +37,12 @@ export default function ProductsPage() {
       }
     };
 
+    // Check initial scroll position
+    handleScroll();
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [mounted]);
 
   // Scroll to top function
   const scrollToTop = () => {
@@ -98,6 +52,10 @@ export default function ProductsPage() {
     });
   };
 
+  // Don't render until mounted
+  if (!mounted) {
+    return <div></div>;
+  }
 
   return (
     <>
@@ -123,9 +81,6 @@ export default function ProductsPage() {
                     <div className="product-page-icon">
                       <span>{product.icon}</span>
                     </div>
-                    <div className="product-page-price">
-                      {product.price}
-                    </div>
                   </div>
                   
                   <div className="product-page-content">
@@ -143,10 +98,7 @@ export default function ProductsPage() {
                     
                     <div className="product-page-buttons">
                       <button className="product-buy-btn">
-                        Buy Now - {product.price}
-                      </button>
-                      <button className="product-demo-btn">
-                        Free Demo
+                        Explore
                       </button>
                     </div>
                   </div>
@@ -172,8 +124,8 @@ export default function ProductsPage() {
         </div>
       </main>
 
-      {/* Scroll to Top Button */}
-      {showScrollTop && (
+      {/* Scroll to Top Button - only render after mounted to prevent hydration mismatch */}
+      {mounted && showScrollTop && (
         <button 
           className="scroll-to-top"
           onClick={scrollToTop}

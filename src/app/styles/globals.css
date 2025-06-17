@@ -600,7 +600,7 @@ body::before {
   display: none;
   background: var(--gradient-primary);
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   cursor: pointer;
   color: var(--text-white);
   padding: 0.75rem;
@@ -623,7 +623,7 @@ body::before {
   width: 100%;
   height: 100vh;
   background: var(--gradient-background);
-  z-index: 9999;
+  z-index: 99;
   overflow-y: auto;
   animation: slideInFromRight 0.3s ease;
 }
@@ -655,10 +655,10 @@ body::before {
 }
 
 .mobile-menu-close {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  background: linear-gradient(135deg, #ef4444, #dd2a2a);
   border: none;
   color: var(--text-white);
-  font-size: 1.5rem;
+  font-size: 1rem;
   padding: 0.75rem 1.5rem;
   border-radius: var(--radius-lg);
   cursor: pointer;
@@ -669,11 +669,13 @@ body::before {
 .mobile-menu-close:hover {
   transform: rotate(90deg) scale(1.1);
   box-shadow: var(--shadow-xl);
+  font-size: 0.8rem;
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
 }
 
 .mobile-menu-content {
   flex: 1;
-  padding: 2rem;
+  padding: 1.8rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -684,13 +686,13 @@ body::before {
   align-items: center;
   color: var(--text-white);
   text-decoration: none;
-  padding: 1.25rem 1.5rem;
+  padding: 1.05rem 1.3rem;
   border-radius: var(--radius-xl);
   font-weight: 600;
   font-size: 1.1rem;
   transition: all 0.3s ease;
   margin-bottom: 0.5rem;
-  background: linear-gradient(145deg, rgba(30, 41, 59, 0.5), rgba(51, 65, 85, 0.3));
+  background: linear-gradient(145deg, rgba(5, 28, 66, 0.5), rgba(0, 28, 68, 0.3));
   border: 1px solid var(--border-light);
   position: relative;
   overflow: hidden;
@@ -703,7 +705,7 @@ body::before {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(36, 118, 250, 0.301), transparent);
   transition: left 0.6s;
 }
 
@@ -902,6 +904,30 @@ body::before {
   box-shadow: var(--shadow-xl);
 }
 
+/* ===== PRODUCTS PAGE HERO SECTION ===== */
+.hero-section {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem 0;
+}
+
+.hero-title {
+  font-size: 2.5rem; /* Same size as product card titles */
+  font-weight: 700;
+  color: var(--text-white);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.hero-description {
+  font-size: 1.1rem;
+  color: var(--text-light);
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 1.6;
+}
+
 /* ===== PRODUCTS SECTION ===== */
 .products-section {
   padding: 4rem 0;
@@ -930,10 +956,11 @@ body::before {
 
 .products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: 1fr;
   gap: 2rem;
-  max-width: 1200px;
+  max-width: 500px;
   margin: 0 auto;
+  justify-items: center;
 }
 
 .product-card {
@@ -944,9 +971,10 @@ body::before {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  height: 280px;
+  height: 330px;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .product-card:hover {
@@ -976,6 +1004,8 @@ body::before {
   flex: 1;
   display: flex;
   flex-direction: column;
+  text-align: center;
+  position: relative;
 }
 
 .product-title {
@@ -983,35 +1013,118 @@ body::before {
   font-weight: 600;
   color: var(--text-white);
   margin-bottom: 0.75rem;
-  line-height: 1.3;
 }
 
 .product-description {
   color: var(--text-gray);
-  line-height: 1.4;
+  line-height: 1.5;
   margin-bottom: 1rem;
   flex-grow: 1;
   font-size: 0.875rem;
 }
 
+/* Missing CSS for the button */
 .product-price-btn {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  min-width: 100px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
   background: var(--gradient-secondary);
   color: var(--text-white);
   border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 25px;
+  border-radius: var(--radius-lg);
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  align-self: flex-start;
+  flex: 1;
   margin-top: auto;
 }
-
+.product-price-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s;
+}
 .product-price-btn:hover {
-  background: linear-gradient(135deg, #15803d, #166534);
+  background: linear-gradient(135deg, #0bda57, #1ee466);
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .products-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .product-card {
+    padding: 1.25rem;
+    height: auto;
+    min-height: 260px;
+  }
+
+  .product-price-btn {
+    position: static;
+    margin-top: 1rem;
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card {
+    height: auto;
+    min-height: 240px;
+    padding: 1rem;
+  }
+
+  .product-title {
+    font-size: 1.5rem;
+  }
+
+  .product-description {
+    font-size: 0.8rem;
+  }
+
+  .product-price-btn {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.85rem;
+    margin-top: 1rem;
+    width: 100%;
+    position: static;
+  }
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  
+  .product-page-title {
+    font-size: 2rem;
+  }
+  
+  .products-cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .products-cta-primary-btn,
+  .products-cta-secondary-btn {
+    width: 100%;
+    max-width: 250px;
+  }
 }
 
 /* ===== PARTNERS SECTION ===== */
@@ -1728,14 +1841,7 @@ body::before {
   font-size: 1.5rem;
 }
 
-.service-price {
-  background: var(--gradient-secondary);
-  color: var(--text-white);
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius-2xl);
-  font-weight: 600;
-  font-size: 0.875rem;
-}
+/* Removed service-price styles as we don't want to display prices for services */
 
 .service-detail-title {
   font-size: 1.5rem;
@@ -1858,9 +1964,11 @@ body::before {
 
 .products-page-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-  gap: 2.5rem;
-  margin-bottom: 4rem;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  justify-items: center;
 }
 
 .product-page-card {
@@ -1884,7 +1992,7 @@ body::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.9rem;
 }
 
 .product-page-icon {
@@ -1913,7 +2021,7 @@ body::before {
 }
 
 .product-page-title {
-  font-size: 1.4rem;
+  font-size: 1.7rem;
   font-weight: 600;
   color: var(--text-white);
   margin-bottom: 1rem;
@@ -2948,7 +3056,6 @@ body::before {
     display: none;
   }
 
-
   .mobile-menu-btn {
     display: block;
   }
@@ -2976,7 +3083,17 @@ body::before {
 
   .product-card {
     padding: 1.25rem;
-    height: 250px;
+    height: auto;
+    min-height: 260px;
+  }
+
+  /* Fixed mobile product button positioning */
+  .product-price-btn {
+    position: static;
+    margin-top: 1rem;
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9rem;
   }
 
   .services-title,
@@ -3173,7 +3290,6 @@ body::before {
     font-size: 2.5rem;
   }
 
-
   /* Chatbot Responsive */
   .chatbot-container {
     bottom: 75px;
@@ -3218,7 +3334,8 @@ body::before {
   }
 
   .product-card {
-    height: 230px;
+    height: auto;
+    min-height: 240px;
     padding: 1rem;
   }
 
@@ -3231,8 +3348,11 @@ body::before {
   }
 
   .product-price-btn {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.8rem;
+    padding: 0.8rem 1.2rem;
+    font-size: 0.85rem;
+    margin-top: 1rem;
+    width: 100%;
+    position: static;
   }
 
   .service-card {
@@ -3242,9 +3362,9 @@ body::before {
 
   .footer-content {
     grid-template-columns: 1fr;
-    
   }
- .social-links {
+
+  .social-links {
     justify-content: center;
   }
 
@@ -3252,6 +3372,11 @@ body::before {
     align-items: center;
   }
 
+  /* Fixed mobile footer location link centering */
+  .footer-location-link {
+    justify-content: center;
+    text-align: center;
+  }
 
   .partners-section {
     height: 80px;
@@ -3328,7 +3453,7 @@ body::before {
   .chatbot-window {
     width: 290px;
     max-height: 60vh;
-    right: 0px;
+    right: 4rem;
     bottom: 60px;
   }
   
@@ -3336,6 +3461,7 @@ body::before {
     width: 50px;
     height: 50px;
     font-size: 1.2rem;
+    bottom: 5.5rem;
   }
 }
 

@@ -10,6 +10,7 @@ import Footer from '../components/footer';
 export default function AboutPage() {
   const [visibleItems, setVisibleItems] = useState<number[]>([]);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const timelineItems = [
     {
@@ -44,8 +45,15 @@ export default function AboutPage() {
     }
   ];
 
+  // Handle mounting to prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Show/hide scroll-to-top button
   useEffect(() => {
+    if (!mounted) return;
+
     const handleScroll = () => {
       if (window.scrollY > 300) {
         setShowScrollTop(true);
@@ -54,9 +62,10 @@ export default function AboutPage() {
       }
     };
 
+    handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [mounted]);
 
   // Scroll to top function
   const scrollToTop = () => {
@@ -65,10 +74,11 @@ export default function AboutPage() {
       behavior: 'smooth'
     });
   };
-;
 
   // Animate timeline items on scroll
   useEffect(() => {
+    if (!mounted) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -85,7 +95,12 @@ export default function AboutPage() {
     timelineElements.forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
-  }, []);
+  }, [mounted]);
+
+  // Don't render until mounted to prevent hydration issues
+  if (!mounted) {
+    return <div></div>;
+  }
 
   return (
     <>
@@ -101,7 +116,6 @@ export default function AboutPage() {
               strategic partnerships, and unwavering commitment to digital excellence.
             </p>
           </section>
-
           {/* Our Team Section */}
           <section className="team-section">
             <div className="team-header">
@@ -116,14 +130,14 @@ export default function AboutPage() {
                 <div className="team-image-container">
                   <Image 
                     src="/team/mos.jpg" 
-                    alt="Moses Miraraya" 
+                    alt="Moses Mirarayi" 
                     width={120} 
                     height={120}
                     className="team-image"
                   />
                 </div>
                 <div className="team-info">
-                  <h3 className="team-name">Moses Miraraya</h3>
+                  <h3 className="team-name">Moses Mirarayi</h3>
                   <p className="team-title-job">Head of Operations</p>
                   <p className="team-description-text">
                     Operations excellence leader ensuring seamless project delivery and client satisfaction.
@@ -232,7 +246,6 @@ export default function AboutPage() {
               </div>
             </div>
           </section>
-
           {/* Animated Timeline */}
           <section className="timeline-section">
             <h2 className="timeline-title">Our Journey</h2>
@@ -301,7 +314,7 @@ export default function AboutPage() {
       </main>
 
       {/* Scroll to Top Button */}
-      {showScrollTop && (
+      {mounted && showScrollTop && (
         <button 
           className="scroll-to-top"
           onClick={scrollToTop}

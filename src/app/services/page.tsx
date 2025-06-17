@@ -10,53 +10,37 @@ export default function ServicesPage() {
  
   const services = [
     {
-      title: 'Software Publishing',
-      description: 'Comprehensive software publishing services including distribution, licensing, and digital marketplace management for your software products with global reach.',
-      icon: '💿',
-      features: ['Digital distribution', 'License management', 'Marketplace integration', 'Version control'],
-      price: 'Starting at $199/month'
-    },
-    {
       title: 'Web Portals',
       description: 'Custom web portal development and management solutions that provide secure access to information and services for your users with advanced security features.',
       icon: '🌐',
-      features: ['Custom portal design', 'User authentication', 'Content management', 'Responsive design'],
-      price: 'Starting at $299/month'
+      features: ['Custom portal design', 'User authentication', 'Content management', 'Responsive design']
     },
     {
       title: 'Computer Programming',
       description: 'Professional software development services using cutting-edge technologies to build scalable and efficient applications tailored to your business needs.',
       icon: '💻',
-      features: ['Custom software development', 'Full-stack solutions', 'API integration', 'Code optimization'],
-      price: 'Starting at $399/month'
+      features: ['Custom software development', 'Full-stack solutions', 'API integration', 'Code optimization']
     },
     {
       title: 'Computer Consultancy & Facilities Management',
       description: 'Expert IT consultancy and comprehensive computer facilities management to optimize your technology infrastructure and reduce operational costs.',
       icon: '🔧',
-      features: ['IT consulting', 'Infrastructure management', 'System optimization', 'Technical support'],
-      price: 'Starting at $499/month'
-    },
-    {
-      title: 'TV Programming & Broadcasting Activities',
-      description: 'Complete television programming and broadcasting solutions including content creation, scheduling, and distribution management for media companies.',
-      icon: '📺',
-      features: ['Content programming', 'Broadcasting management', 'Schedule optimization', 'Distribution networks'],
-      price: 'Starting at $599/month'
-    },
-    {
-      title: 'Memories Storage',
-      description: 'Secure and reliable data storage solutions for preserving your digital memories and important information with cloud integration and backup services.',
-      icon: '💾',
-      features: ['Cloud storage', 'Data backup', 'Memory preservation', 'Secure access'],
-      price: 'Starting at $99/month'
+      features: ['IT consulting', 'Infrastructure management', 'System optimization', 'Technical support']
     }
   ];
 
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // Handle mounting to prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Show/hide scroll-to-top button
   useEffect(() => {
+    if (!mounted) return;
+
     const handleScroll = () => {
       if (window.scrollY > 300) {
         setShowScrollTop(true);
@@ -65,9 +49,10 @@ export default function ServicesPage() {
       }
     };
 
+    handleScroll();
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [mounted]);
 
   // Scroll to top function
   const scrollToTop = () => {
@@ -76,6 +61,11 @@ export default function ServicesPage() {
       behavior: 'smooth'
     });
   };
+
+  // Don't render until mounted
+  if (!mounted) {
+    return <div></div>;
+  }
 
   return (
     <>
@@ -92,7 +82,6 @@ export default function ServicesPage() {
               and drive growth through innovative technology.
             </p>
           </section>
-
           {/* Services Grid */}
           <section className="services-grid-section">
             <div className="services-grid">
@@ -101,9 +90,6 @@ export default function ServicesPage() {
                   <div className="service-detail-header">
                     <div className="service-detail-icon">
                       <span>{service.icon}</span>
-                    </div>
-                    <div className="service-price">
-                      {service.price}
                     </div>
                   </div>
                   
@@ -138,7 +124,6 @@ export default function ServicesPage() {
                 advanced technology can make for your business.
               </p>
               <div className="cta-buttons">
-                <button className="cta-primary-btn">Start Free Trial</button>
                 <button className="cta-secondary-btn">Schedule Demo</button>
               </div>
             </div>
@@ -147,7 +132,7 @@ export default function ServicesPage() {
       </main>
 
       {/* Scroll to Top Button */}
-      {showScrollTop && (
+      {mounted && showScrollTop && (
         <button 
           className="scroll-to-top"
           onClick={scrollToTop}
