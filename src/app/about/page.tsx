@@ -148,6 +148,25 @@ export default function AboutPage() {
               <div className="team-card">
                 <div className="team-image-container">
                   <Image 
+                    src="/team/peace_muzirankoni.jpg" 
+                    alt="Peace Muzirankoni" 
+                    width={120} 
+                    height={120}
+                    className="team-image"
+                  />
+                </div>
+                <div className="team-info">
+                  <h3 className="team-name">Peace Muzirankoni</h3>
+                  <p className="team-title-job">Customer Service and Relations Officer</p>
+                  <p className="team-description-text">
+                    Manages client inquiries, ensures timely professional responses, maintains customer satisfaction, and supports relationship-building as the primary client contact
+                  </p>
+                </div>
+              </div>
+
+              <div className="team-card">
+                <div className="team-image-container">
+                  <Image 
                     src="/team/but.jpg" 
                     alt="Joseph Maranatha" 
                     width={120} 
